@@ -11,7 +11,7 @@ function y = partialDeriv(func, p, x, n)
     end
     
     % get delta as square root of machine epsilon
-    delta = sqrt(eps);
+    delta = sqrt(eps) * func(x);
 
     % get x +- delta
     afterX = x;
