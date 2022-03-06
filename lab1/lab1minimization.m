@@ -1,7 +1,9 @@
 % EARIN LABORATORY 1
 % MICHAŁ SZOPIŃSKI 300182 & TOMASZ JURANIEC 293109
 % https://github.com/Lachcim/szopinski-earin
+% This file contains the input prompt and output analysis code.
 
+% prompt for minimization algorithm
 fprintf([ ...
     'Available minimization algorithms:\n', ...
     '\tN) Newton''s method\n', ...
@@ -12,6 +14,7 @@ while ~strcmp(algorithm, 'N') && ~strcmp(algorithm, 'G')
     algorithm = input('Specify minimization algorithm [N/G]: ', 's');
 end
 
+% prompt for mathematical function
 fprintf([ ...
     'Available function forms:\n', ...
     '\tF(x) = ax^3 + bx^2 + cx + d\n', ...
@@ -22,6 +25,7 @@ while ~strcmp(functionForm, 'F') && ~strcmp(functionForm, 'G')
     functionForm = input('Specify function form [F/G]: ', 's');
 end
 
+% prompt for function parameters
 if functionForm == 'F'
     fParams = zeros(1, 4);
     fParamNames = 'abcd';
@@ -36,6 +40,7 @@ if functionForm == 'F'
         end
     end
 
+    % define the mathematical function
     mainFunc = @(x) fParams(1) * x^3 + fParams(2) * x^2 + fParams(3) * x + fParams(4);
 else
     while 1
@@ -61,9 +66,11 @@ else
         end
     end
 
+    % define the mathematical function
     mainFunc = @(x) c + b' * x + x' * A * x;
 end
 
+% prompt for stopping condition
 fprintf([ ...
     'Available stopping conditions:\n', ...
     '\t1. Max iterations\n', ...
@@ -80,6 +87,7 @@ while 1
     end
 end
 
+% prompt for stopping condition argument
 if stopCond == StopCondition.MaxIterations
     stopCondArg = 0;
     while ~isscalar(stopCondArg) || floor(stopCondArg) ~= stopCondArg || stopCondArg <= 0
@@ -97,6 +105,7 @@ else
     end
 end
 
+% prompt for initial value form
 fprintf([ ...
     'Available initial value forms:\n', ...
     '\t1. Initial value given explicitly\n', ...
@@ -107,6 +116,7 @@ while ~isscalar(initialValueChoice) || ~ismember(initialValueChoice, [1 2])
     initialValueChoice = input('Choose initial value form [1/2]: ');
 end
 
+% prompt for initial value or range of random values
 if initialValueChoice == 1
     initialValueLength = 1;
     initialValueDescription = 'scalar';
@@ -135,17 +145,20 @@ else
     end
 end
 
+% prompt for batch mode
 repeatCount = 0;
 while ~isscalar(repeatCount) || floor(repeatCount) ~= repeatCount || repeatCount <= 0
     repeatCount = input('How many times to perform the calculation: ');
 end
 
+% define lambda with established parameters
 if algorithm == 'N'
     minimize = @(startingPoint) newton(mainFunc, startingPoint, stopCond, stopCondArg);
 else
     minimize = @(startingPoint) gradientDescent(mainFunc, startingPoint, stopCond, stopCondArg);
 end
 
+% establish length of argument to mathematical function
 initialValueLength = 1;
 if functionForm == 'G'
     initialValueLength = length(b);
@@ -153,11 +166,13 @@ end
 
 results = zeros(1, repeatCount);
 for i = 1:repeatCount
+    % generate random initial value or use prefefined one
     if initialValueChoice == 2
         startingPoint = rand(initialValueLength, 1) .* (initialValueRange(2) - initialValueRange(1)) + initialValueRange(1);
     else
         startingPoint = initialValue;
     end
 
+    % record the result
     results(i) = minimize(startingPoint);
 end
