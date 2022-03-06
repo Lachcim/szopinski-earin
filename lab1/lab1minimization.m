@@ -74,14 +74,31 @@ stopConds = [StopCondition.MaxIterations, StopCondition.DesiredValue, StopCondit
 stopCondChoice = 0;
 while 1
     stopCondChoice = input('Choose stopping condition [1/2/3]: ');
-    if ismember(stopCondChoice, [1 2 3])
+    if isscalar(stopCondChoice) && ismember(stopCondChoice, [1 2 3])
         stopCond = stopConds(stopCondChoice);
         break
     end
 end
 
-if algorithm == 'N'
-    minimize = @() newton(mainFunc, 123, stopCond, 123);
+if stopCond == StopCondition.MaxIterations
+    stopCondArg = 0;
+    while ~isscalar(stopCondArg) || floor(stopCondArg) ~= stopCondArg || stopCondArg <= 0
+        stopCondArg = input('Max iteration count: ');
+    end
+elseif stopCond == StopCondition.DesiredValue
+    stopCondArg = [0, 0];
+    while ~isscalar(stopCondArg)
+        stopCondArg = input('Desired value: ');
+    end
 else
-    minimize = @() gradientDescent(mainFunc, 123, stopCond, 123);
+    stopCondArg = 0;
+    while ~isscalar(stopCondArg) || stopCondArg <= 0
+        stopCondArg = input('Max computation time in seconds: ');
+    end
+end
+
+if algorithm == 'N'
+    minimize = @(startingPoint) newton(mainFunc, startingPoint, stopCond, stopCondArg);
+else
+    minimize = @(startingPoint) gradientDescent(mainFunc, startingPoint, stopCond, stopCondArg);
 end
