@@ -176,3 +176,10 @@ for i = 1:repeatCount
     % record the result
     results(i) = minimize(startingPoint);
 end
+
+if repeatCount > 1
+    fprintf("Mean result: %f\n", mean(results));
+    fprintf("Standard deviation: %f\n", std(results));
+else
+    fprintf("Result: %f\n", results);
+end
