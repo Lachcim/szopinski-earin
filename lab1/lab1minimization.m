@@ -159,22 +159,22 @@ else
 end
 
 % establish length of argument to mathematical function
-initialValueLength = 1;
+argLength = 1;
 if functionForm == 'G'
-    initialValueLength = length(b);
+    argLength = length(b);
 end
 
-results = zeros(1, repeatCount);
+results = zeros(argLength, repeatCount);
 for i = 1:repeatCount
     % generate random initial value or use prefefined one
     if initialValueChoice == 2
-        startingPoint = rand(initialValueLength, 1) .* (initialValueRange(2) - initialValueRange(1)) + initialValueRange(1);
+        startingPoint = rand(argLength, 1) .* (initialValueRange(2) - initialValueRange(1)) + initialValueRange(1);
     else
         startingPoint = initialValue;
     end
 
     % record the result
-    results(i) = minimize(startingPoint);
+    results(:, i) = minimize(startingPoint);
 end
 
 if repeatCount > 1
