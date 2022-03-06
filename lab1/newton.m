@@ -13,9 +13,9 @@ function xAsterisk = newton(func, startingPoint, stopCond, stopCondArg)
     while 1
         if stopCond == StopCondition.DesiredValue && y <= stopCondArg; break; end
 
-        deriv1 = deriv(func, xAsterisk, 1);
-        deriv2 = deriv(func, xAsterisk, 2);
-        xAsterisk = xAsterisk - deriv1 / deriv2;
+        grad1 = gradient(func, xAsterisk, 1);
+        grad2 = gradient(func, xAsterisk, 2);
+        xAsterisk = xAsterisk - grad1 ./ grad2;
         y = func(xAsterisk);
 
         stepCount = stepCount + 1;
