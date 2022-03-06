@@ -97,6 +97,44 @@ else
     end
 end
 
+fprintf([ ...
+    'Available initial value forms:\n', ...
+    '\t1. Initial value given explicitly\n', ...
+    '\t2. Initial value drawn from range\n', ...
+]);
+initialValueChoice = 0;
+while ~isscalar(initialValueChoice) || ~ismember(initialValueChoice, [1 2])
+    initialValueChoice = input('Choose initial value form [1/2]: ');
+end
+
+if initialValueChoice == 1
+    initialValueLength = 1;
+    initialValueDescription = 'scalar';
+    
+    if functionForm == 'G'
+        initialValueLength = length(b);
+        if initialValueLength ~= 1
+            initialValueDescription = strcat("vector of length ", num2str(initialValueLength));
+        end
+    end
+
+    while 1
+        initialValue = input(strcat("Initial value (", initialValueDescription, "): "));
+        if isvector(initialValue) && length(initialValue) == initialValueLength
+            break
+        end
+    end
+
+    if size(initialValue, 1) == 1
+        initialValue = initialValue';
+    end
+else
+    initialValueRange = 0;
+    while ~isvector(initialValueRange) && length(initialValueRange) ~= 2
+        initialValueRange = input('Range of values to choose from (2-element vector): ');
+    end
+end
+
 if algorithm == 'N'
     minimize = @(startingPoint) newton(mainFunc, startingPoint, stopCond, stopCondArg);
 else
