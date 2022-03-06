@@ -4,7 +4,7 @@
 % This function calulates the n-th gradient of func at x.
 
 function y = gradient(func, x, n)
-    y = zeros(1, length(x));
+    y = zeros(length(x), 1);
     
     for p = 1:length(x)
         y(p) = partialDeriv(func, p, x, n);
