@@ -3,5 +3,5 @@
 % https://github.com/Lachcim/szopinski-earin
 
 function xAsterisk = gradientDescent(func, startingPoint, stopCond, stopCondArg)
-    xAsterisk = 'gd here';
+    xAsterisk = startingPoint(1);
 end

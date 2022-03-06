@@ -3,5 +3,5 @@
 % https://github.com/Lachcim/szopinski-earin
 
 function xAsterisk = newton(func, startingPoint, stopCond, stopCondArg)
-    xAsterisk = 'newton here';
+    xAsterisk = startingPoint(1);
 end

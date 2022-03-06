@@ -129,14 +129,35 @@ if initialValueChoice == 1
         initialValue = initialValue';
     end
 else
-    initialValueRange = 0;
-    while ~isvector(initialValueRange) && length(initialValueRange) ~= 2
+    initialValueRange = [1, 0];
+    while ~isvector(initialValueRange) || length(initialValueRange) ~= 2 || initialValueRange(1) > initialValueRange(2)
         initialValueRange = input('Range of values to choose from (2-element vector): ');
     end
+end
+
+repeatCount = 0;
+while ~isscalar(repeatCount) || floor(repeatCount) ~= repeatCount || repeatCount <= 0
+    repeatCount = input('How many times to perform the calculation: ');
 end
 
 if algorithm == 'N'
     minimize = @(startingPoint) newton(mainFunc, startingPoint, stopCond, stopCondArg);
 else
     minimize = @(startingPoint) gradientDescent(mainFunc, startingPoint, stopCond, stopCondArg);
+end
+
+initialValueLength = 1;
+if functionForm == 'G'
+    initialValueLength = length(b);
+end
+
+results = zeros(1, repeatCount);
+for i = 1:repeatCount
+    if initialValueChoice == 2
+        startingPoint = rand(initialValueLength, 1) .* (initialValueRange(2) - initialValueRange(1)) + initialValueRange(1);
+    else
+        startingPoint = initialValue;
+    end
+
+    results(i) = minimize(startingPoint);
 end
