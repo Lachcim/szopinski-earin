@@ -2,6 +2,21 @@
 % MICHAŁ SZOPIŃSKI 300182 & TOMASZ JURANIEC 293109
 % https://github.com/Lachcim/szopinski-earin
 
+fprintf([ ...
+    'Available minimization algorithms:\n', ...
+    '\tN) Newton''s method\n', ...
+    '\tG) Gradient descent\n', ...
+]);
+algorithm = '';
+while ~strcmp(algorithm, 'N') && ~strcmp(algorithm, 'G')
+    algorithm = input('Specify minimization algorithm [N/G]: ', 's');
+end
+
+fprintf([ ...
+    'Available function forms:\n', ...
+    '\tF(x) = ax^3 + bx^2 + cx + d\n', ...
+    '\tG(x) = c + b^T x + x^T A x\n', ...
+]);
 functionForm = '';
 while ~strcmp(functionForm, 'F') && ~strcmp(functionForm, 'G')
     functionForm = input('Specify function form [F/G]: ', 's');
@@ -47,4 +62,26 @@ else
     end
 
     mainFunc = @(x) c + b' * x + x' * A * x;
+end
+
+fprintf([ ...
+    'Available stopping conditions:\n', ...
+    '\t1. Max iterations\n', ...
+    '\t2. Desired value\n', ...
+    '\t3. Max computation time\n' ...
+]);
+stopConds = [StopCondition.MaxIterations, StopCondition.DesiredValue, StopCondition.MaxTime];
+stopCondChoice = 0;
+while 1
+    stopCondChoice = input('Choose stopping condition [1/2/3]: ');
+    if ismember(stopCondChoice, [1 2 3])
+        stopCond = stopConds(stopCondChoice);
+        break
+    end
+end
+
+if algorithm == 'N'
+    minimize = @() newton(mainFunc, 123, stopCond, 123);
+else
+    minimize = @() gradientDescent(mainFunc, 123, stopCond, 123);
 end
