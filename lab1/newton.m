@@ -15,6 +15,7 @@ function xAsterisk = newton(func, startingPoint, stopCond, stopCondArg)
 
         grad1 = gradient(func, xAsterisk, 1);
         grad2 = gradient(func, xAsterisk, 2);
+        if any(grad2 == 0); break; end
         xAsterisk = xAsterisk - grad1 ./ grad2;
         y = func(xAsterisk);
 
