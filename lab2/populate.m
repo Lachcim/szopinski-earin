@@ -5,10 +5,10 @@
 
 function population = populate(dim, d, popSize)
     rand32 = @() randi([0 intmax('uint32')], 'uint32');
-    rand64 = @(x) typecast([rand32() rand32()], 'uint64');
+    rand64 = @(x) typecast([rand32() rand32()], 'int64');
 
     population = arrayfun(rand64, zeros(popSize, dim));
 
-    bitmask = bitshift(intmax('uint64'), d - 63);
-    population = arrayfun(@(x) typecast(bitand(x, bitmask), 'int64'), population);
+    population = bitshift(population, 63 - d);
+    population = bitshift(population, d - 63);
 end
