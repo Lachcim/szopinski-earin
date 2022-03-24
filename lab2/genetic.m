@@ -3,11 +3,22 @@
 % https://github.com/Lachcim/szopinski-earin
 % This file contains the implementation of the genetic algorithm.
 
-function population = genetic(dim, d, fitness, popSize, crossover, mutation, maxIter)
+function population = genetic(dim, d, fitness, popSize, crossoverProb, mutationProb, maxIter)
     population = populate(dim, d, popSize);
-    ages = 1:popSize;
 
     for i = 1:maxIter
+        % pick two parents and spawn two identical children
+        children = roulette(population, fitness);
 
+        % simulate crossover and mutation in children
+        children = crossover(children, crossoverProb);
+        children = mutate(children, mutationProb);
+
+        % cycle through population to achieve FIFO
+        child1index = mod((i - 1) * 2, popSize) + 1;
+        child2index = mod((i - 1) * 2 + 1, popSize) + 1;
+
+        population(child1index, :) = children(1, :);
+        population(child2index, :) = children(2, :);
     end
 end

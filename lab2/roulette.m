@@ -13,14 +13,17 @@ function parents = roulette(population, fitness)
     slices = fitnesses - min(fitnesses);
     slices = slices ./ sum(slices);
 
-    parents = zeros(1, 2);
-    for i = 1:2
+    parents = zeros(2, size(population, 2));
+
+    for parent = 1:2
         threshold = rand();
         partialSum = 0;
-        for j = 1:size(slices)
-            partialSum = partialSum + slices(j);
+
+        for i = 1:size(slices)
+            partialSum = partialSum + slices(i);
+
             if partialSum >= threshold
-                parents(i) = j;
+                parents(parent, :) = population(i, :);
                 break
             end
         end
