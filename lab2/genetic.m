@@ -11,8 +11,8 @@ function population = genetic(dim, d, fitness, popSize, crossoverProb, mutationP
         children = roulette(population, fitness);
 
         % simulate crossover and mutation in children
-        children = crossover(children, crossoverProb);
-        children = mutate(children, mutationProb);
+        children = crossover(children, d, crossoverProb);
+        children = mutate(children, d, mutationProb);
 
         % cycle through population to achieve FIFO
         child1index = mod((i - 1) * 2, popSize) + 1;
