@@ -13,7 +13,7 @@ function parents = roulette(population, fitness)
     slices = fitnesses - min(fitnesses);
     slices = slices ./ sum(slices);
 
-    parents = zeros(2, size(population, 2));
+    parents = zeros(2, size(population, 2), 'int64');
 
     for parent = 1:2
         threshold = rand();
