@@ -5,7 +5,7 @@ OBJECTS = $(patsubst %.cpp, build/%.o, $(SOURCES))
 build/tictactoe: $(OBJECTS) | build
 	$(CXX) $(LDFLAGS) -o $@ $^
 
-build/%.o: %.c $(HEADERS) | build
+build/%.o: %.cpp $(HEADERS) | build
 	$(CXX) -c $(CFLAGS) -o $@ $<
 
 build:
