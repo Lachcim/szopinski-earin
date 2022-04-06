@@ -15,6 +15,7 @@ class Board {
         Board();
 
         Board derive(int, char) const;
+        char get_char(int) const;
         bool can_place(int) const;
         char get_winner() const;
 };

@@ -20,6 +20,10 @@ Board Board::derive(int position, char player) const {
     return new_board;
 }
 
+char Board::get_char(int position) const {
+    return fields[position] ? fields[position] : '.';
+}
+
 bool Board::can_place(int position) const {
     return fields[position] == 0;
 }
@@ -44,7 +48,7 @@ char Board::get_winner() const {
     //non-terminal state
     for (int i = 0; i < 9; i++)
         if (fields[i] == 0)
-            return '?';
+            return 0;
 
     //draw
     return '=';
