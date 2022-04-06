@@ -5,8 +5,12 @@
     This file contains input prompt.
 */
 
+#include "board.h"
+#include "minmax.h"
 #include <cstdio>
 
 int main() {
-    std::printf("hello world\n");
+    Board board;
+    move best_move = get_best_move(board, 'O');
+    std::printf("best pos: %d\nbest value: %d\n", best_move.position, best_move.value);
 }

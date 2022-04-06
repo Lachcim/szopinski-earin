@@ -13,14 +13,18 @@ Board::Board() {
         fields[i] = 0;
 }
 
-Board Board::derive(int position, char player) {
+Board Board::derive(int position, char player) const {
     //create a copy of the current board with the given field changed
     Board new_board(*this);
     new_board.fields[position] = player;
     return new_board;
 }
 
-char Board::get_winner() {
+bool Board::can_place(int position) const {
+    return fields[position] == 0;
+}
+
+char Board::get_winner() const {
     //check rows
     for (int row = 0; row <= 6; row += 3)
         if (fields[row] && fields[row] == fields[row + 1] && fields[row] == fields[row + 2])

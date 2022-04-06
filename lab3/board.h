@@ -14,8 +14,9 @@ class Board {
     public:
         Board();
 
-        Board derive(int, char);
-        char get_winner();
+        Board derive(int, char) const;
+        bool can_place(int) const;
+        char get_winner() const;
 };
 
 #endif
