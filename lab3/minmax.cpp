@@ -7,7 +7,7 @@
 
 #include "minmax.h"
 
-move get_best_move(const Board& board, char player) {
+static move get_best_move(const Board& board, char player, int alpha, int beta) {
     //terminal state reached, only one outcome possible
     switch (board.get_winner()) {
         case 'X': return {-1, 1};
@@ -26,20 +26,32 @@ move get_best_move(const Board& board, char player) {
 
         //derive new board and let the opponent do their worst
         Board derived = board.derive(pos, player);
-        move opponent_move = get_best_move(derived, player == 'X' ? 'O' : 'X');
+        move opponent_move = get_best_move(derived, player == 'X' ? 'O' : 'X', alpha, beta);
         opponent_move.position = pos;
 
         if (player == 'X') {
             //pick most X-friendly value
-            if (opponent_move.value > best_move.value)
+            if (opponent_move.value > best_move.value) {
                 best_move = opponent_move;
+                alpha = opponent_move.value;
+            }
         }
         else {
             //pick most O-friendly value
-            if (opponent_move.value < best_move.value)
+            if (opponent_move.value < best_move.value) {
                 best_move = opponent_move;
+                beta = opponent_move.value;
+            }
         }
+
+        //alpha-beta prunning
+        if (alpha >= beta)
+            break;
     }
 
     return best_move;
+}
+
+move get_best_move(const Board& board, char player) {
+    return get_best_move(board, player, -2, 2);
 }
