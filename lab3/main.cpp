@@ -9,26 +9,26 @@
 #include "minmax.h"
 
 char get_first_player() {
-    char output = 0;
+    char output;
 
-    while (output != 'X' && output != 'O') {
+    while (true) {
         std::fputs("Which player would you like to go first? [x/o] ", stdout);
         std::scanf(" %c", &output);
-        output &= 0xDF;
-    }
 
-    return output;
+        output &= 0xDF;
+        if (output == 'X' || output == 'O')
+            return output;
+    }
 }
 
 void print_board(const Board& board) {
-    int indices[] = {6, 7, 8, 3, 4, 5, 0, 1, 2};
+    for (int i = 2; i >= 0; i--)
+        for (int j = 0; j < 3; j++) {
+            std::putc(board.get_char(i * 3 + j), stdout);
 
-    for (int i = 0; i < 9; i++) {
-        std::putc(board.get_char(indices[i]), stdout);
-
-        if (i % 3 == 2)
-            std::putc('\n', stdout);
-    }
+            if (j == 2)
+                std::putc('\n', stdout);
+        }
 }
 
 int get_move(const Board& board) {
@@ -39,19 +39,16 @@ int get_move(const Board& board) {
         std::scanf(" %c", &output);
 
         if (output >= '1' && output <= '9' && board.can_place(output - '1'))
-            break;
+            return output - '1';
     }
-
-    return output - '1';
 }
 
 int main() {
-    std::fputs("You are player X. ", stdout);
-    char first_player = get_first_player();
-
     Board board;
 
-    if (first_player == 'O') {
+    std::fputs("You are player X. ", stdout);
+
+    if (get_first_player() == 'O') {
         move opponent_move = get_best_move(board, 'O');
         board = board.derive(opponent_move.position, 'O');
 

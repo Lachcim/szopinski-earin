@@ -9,8 +9,7 @@
 
 move get_best_move(const Board& board, char player) {
     //terminal state reached, only one outcome possible
-    char winner = board.get_winner();
-    switch (winner) {
+    switch (board.get_winner()) {
         case 'X': return {-1, 1};
         case 'O': return {-1, -1};
         case '=': return {-1, 0};
